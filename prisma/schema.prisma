@@ -52,7 +52,6 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
-  // Relations
   providerProfile ProviderProfile?
   meals           Meal[]           @relation("ProviderMeals")
   customerOrders  Order[]          @relation("CustomerOrders")
@@ -65,20 +64,19 @@ model User {
 }
 
 model ProviderProfile {
-  id            String   @id @default(uuid())
-  userId        String   @unique
+  id             String   @id @default(uuid())
+  userId         String   @unique
   restaurantName String
-  description   String?
-  address       String
-  openingHours  String   @default("09:00")
-  closingHours  String   @default("22:00")
-  imageUrl      String?
-  cuisineType   String?
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  description    String?
+  address        String
+  openingHours   String   @default("09:00")
+  closingHours   String   @default("22:00")
+  imageUrl       String?
+  cuisineType    String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([restaurantName])
@@ -93,7 +91,6 @@ model Category {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Relations
   meals Meal[]
 
   @@index([name])
@@ -110,11 +107,10 @@ model Meal {
   ingredients String?
   isAvailable Boolean     @default(true)
   dietaryInfo DietaryType @default(NONE)
-  prepTime    Int         @default(30) // in minutes
+  prepTime    Int         @default(30)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  // Relations
   provider   User        @relation("ProviderMeals", fields: [providerId], references: [id], onDelete: Cascade)
   category   Category    @relation(fields: [categoryId], references: [id])
   orderItems OrderItem[]
@@ -139,7 +135,6 @@ model Order {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
-  // Relations
   customer   User        @relation("CustomerOrders", fields: [customerId], references: [id], onDelete: Cascade)
   provider   User        @relation("ProviderOrders", fields: [providerId], references: [id], onDelete: Cascade)
   orderItems OrderItem[]
@@ -159,7 +154,6 @@ model OrderItem {
   priceAtOrder Float
   createdAt    DateTime @default(now())
 
-  // Relations
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   meal  Meal  @relation(fields: [mealId], references: [id])
 
@@ -172,12 +166,11 @@ model Review {
   customerId String
   mealId     String
   orderId    String
-  rating     Int      // 1-5
+  rating     Int
   comment    String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  // Relations
   customer User  @relation(fields: [customerId], references: [id], onDelete: Cascade)
   meal     Meal  @relation(fields: [mealId], references: [id], onDelete: Cascade)
   order    Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
