@@ -75,10 +75,11 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
           select: {
             id: true,
             name: true,
+            phone: true,
             providerProfile: {
               select: {
                 restaurantName: true,
-                phone: true,
+                address: true,
               },
             },
           },
@@ -175,15 +176,15 @@ export const getOrderById = async (req: AuthRequest, res: Response) => {
           select: {
             id: true,
             name: true,
+            phone: true,
             providerProfile: {
               select: {
                 restaurantName: true,
-                address: true,
-                phone: true,
               },
             },
           },
         },
+
         orderItems: {
           include: {
             meal: true,
