@@ -15,7 +15,7 @@ async function main() {
   await prisma.providerProfile.deleteMany();
   await prisma.user.deleteMany();
 
-  console.log(' Cleared existing data');
+  console.log('✓ Cleared existing data');
 
   // Hash password
   const hashedPassword = await bcrypt.hash('password123', 10);
@@ -31,7 +31,7 @@ async function main() {
       status: UserStatus.ACTIVE,
     },
   });
-  console.log(' Created admin user');
+  console.log('✓ Created admin user');
 
   // Create Categories
   const categories = await Promise.all([
@@ -116,7 +116,7 @@ async function main() {
       },
     }),
   ]);
-  console.log(' Created 10 categories');
+  console.log('✓ Created 10 categories');
 
   // Create Providers
   const provider1 = await prisma.user.create({
@@ -215,7 +215,7 @@ async function main() {
     },
   });
 
-  console.log(' Created 4 providers');
+  console.log('✓ Created 4 providers');
 
   // Create Meals for each provider
   const pizzaCategory = categories.find((c) => c.name === 'Pizza')!;
@@ -225,8 +225,10 @@ async function main() {
   const saladCategory = categories.find((c) => c.name === 'Salads')!;
   const dessertCategory = categories.find((c) => c.name === 'Desserts')!;
   const beverageCategory = categories.find((c) => c.name === 'Beverages')!;
+  const pastaCategory = categories.find((c) => c.name === 'Pasta')!;
+  const mexicanCategory = categories.find((c) => c.name === 'Mexican')!;
 
-  // Pizza Palace Meals
+  // Pizza Palace Meals (7 meals)
   await prisma.meal.createMany({
     data: [
       {
@@ -267,6 +269,30 @@ async function main() {
       },
       {
         providerId: provider1.id,
+        categoryId: pastaCategory.id,
+        name: 'Spaghetti Carbonara',
+        description: 'Classic Italian pasta with eggs, bacon, and parmesan',
+        price: 15.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=500',
+        ingredients: 'Spaghetti, Eggs, Bacon, Parmesan, Black pepper',
+        dietaryInfo: DietaryType.NONE,
+        prepTime: 20,
+      },
+      {
+        providerId: provider1.id,
+        categoryId: pastaCategory.id,
+        name: 'Penne Arrabiata',
+        description: 'Spicy tomato sauce with garlic and red peppers',
+        price: 13.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500',
+        ingredients: 'Penne pasta, Tomatoes, Garlic, Red chili, Basil',
+        dietaryInfo: DietaryType.VEGAN,
+        prepTime: 18,
+      },
+      {
+        providerId: provider1.id,
         categoryId: saladCategory.id,
         name: 'Caesar Salad',
         description: 'Crispy romaine with parmesan and croutons',
@@ -292,7 +318,7 @@ async function main() {
     ],
   });
 
-  // Burger Barn Meals
+  // Burger Barn Meals (6 meals)
   await prisma.meal.createMany({
     data: [
       {
@@ -335,6 +361,30 @@ async function main() {
       },
       {
         providerId: provider2.id,
+        categoryId: mexicanCategory.id,
+        name: 'Chicken Tacos',
+        description: 'Three soft tacos with grilled chicken and fresh salsa',
+        price: 11.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500',
+        ingredients: 'Grilled chicken, Tortillas, Salsa, Lettuce, Sour cream',
+        dietaryInfo: DietaryType.NONE,
+        prepTime: 18,
+      },
+      {
+        providerId: provider2.id,
+        categoryId: saladCategory.id,
+        name: 'Cobb Salad',
+        description: 'Mixed greens with chicken, bacon, egg, and blue cheese',
+        price: 12.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500',
+        ingredients: 'Mixed greens, Chicken, Bacon, Egg, Blue cheese, Avocado',
+        dietaryInfo: DietaryType.GLUTEN_FREE,
+        prepTime: 15,
+      },
+      {
+        providerId: provider2.id,
         categoryId: dessertCategory.id,
         name: 'Chocolate Milkshake',
         description: 'Creamy chocolate shake with whipped cream',
@@ -348,7 +398,7 @@ async function main() {
     ],
   });
 
-  // Sushi Master Meals
+  // Sushi Master Meals (6 meals)
   await prisma.meal.createMany({
     data: [
       {
@@ -399,10 +449,34 @@ async function main() {
         dietaryInfo: DietaryType.VEGAN,
         prepTime: 15,
       },
+      {
+        providerId: provider3.id,
+        categoryId: sushiCategory.id,
+        name: 'Spicy Tuna Roll',
+        description: 'Fresh tuna with spicy mayo and cucumber',
+        price: 13.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1563612116625-3012372fccce?w=500',
+        ingredients: 'Tuna, Spicy mayo, Cucumber, Sesame seeds',
+        dietaryInfo: DietaryType.NONE,
+        prepTime: 20,
+      },
+      {
+        providerId: provider3.id,
+        categoryId: dessertCategory.id,
+        name: 'Mochi Ice Cream',
+        description: 'Japanese rice cake with ice cream filling - 3 pieces',
+        price: 7.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500',
+        ingredients: 'Mochi rice cake, Ice cream (assorted flavors)',
+        dietaryInfo: DietaryType.VEGETARIAN,
+        prepTime: 5,
+      },
     ],
   });
 
-  // Spice Garden Meals
+  // Spice Garden Meals (7 meals)
   await prisma.meal.createMany({
     data: [
       {
@@ -455,6 +529,30 @@ async function main() {
       },
       {
         providerId: provider4.id,
+        categoryId: indianCategory.id,
+        name: 'Chicken Tikka Masala',
+        description: 'Grilled chicken in rich tomato and cream sauce',
+        price: 16.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500',
+        ingredients: 'Chicken, Tomato, Cream, Yogurt, Garam masala',
+        dietaryInfo: DietaryType.GLUTEN_FREE,
+        prepTime: 35,
+      },
+      {
+        providerId: provider4.id,
+        categoryId: indianCategory.id,
+        name: 'Garlic Naan',
+        description: 'Soft flatbread with garlic and butter - 2 pieces',
+        price: 3.99,
+        imageUrl:
+          'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500',
+        ingredients: 'Flour, Yogurt, Garlic, Butter',
+        dietaryInfo: DietaryType.VEGETARIAN,
+        prepTime: 10,
+      },
+      {
+        providerId: provider4.id,
         categoryId: beverageCategory.id,
         name: 'Mango Lassi',
         description: 'Sweet yogurt drink with mango',
@@ -468,14 +566,14 @@ async function main() {
     ],
   });
 
-  console.log(' Created meals for all providers');
+  console.log('✓ Created meals for all providers');
 
   // Create Sample Customers
   const customer1 = await prisma.user.create({
     data: {
-      email: 'john@customer.com',
+      email: 'Hasan@customer.com',
       password: hashedPassword,
-      name: 'John Doe',
+      name: 'Hasan Ali',
       phone: '+1234567895',
       address: '100 Customer Street, New York, NY 10005',
       role: Role.CUSTOMER,
@@ -485,9 +583,9 @@ async function main() {
 
   const customer2 = await prisma.user.create({
     data: {
-      email: 'jane@customer.com',
+      email: 'khalid@customer.com',
       password: hashedPassword,
-      name: 'Jane Smith',
+      name: 'Khalid Ahmed',
       phone: '+1234567896',
       address: '200 Buyer Avenue, New York, NY 10006',
       role: Role.CUSTOMER,
@@ -495,7 +593,7 @@ async function main() {
     },
   });
 
-  console.log(' Created 2 sample customers');
+  console.log('✓ Created 2 sample customers');
 
   // Create Sample Orders with Reviews
   const meals = await prisma.meal.findMany({ take: 5 });
@@ -533,10 +631,10 @@ async function main() {
       },
     });
 
-    console.log(' Created sample order with review');
+    console.log('✓ Created sample order with review');
   }
 
-  console.log('\n Database seeding completed successfully!\n');
+  console.log('\n✅ Database seeding completed successfully!\n');
   console.log('Test Accounts:');
   console.log('   Admin: admin@foodhub.com / password123');
   console.log('   Provider: mario@pizzapalace.com / password123');
@@ -549,7 +647,7 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.error(' Seeding failed:', e);
+    console.error('❌ Seeding failed:', e);
     process.exit(1);
   })
   .finally(async () => {
